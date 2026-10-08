@@ -1,66 +1,72 @@
 import React, {useState} from "react";
 import EmployeeList from "./Components/EmployeeList";
+import AddEmployee from "./Components/AddEmployee";
 
 const employeeList = [
   {
     id: 1,
-    name: "Akshat",
-    role: "Software Developer",
-    salary: "1000000"
-  },
-  {
-    id: 2,
-    name: "Arjun",
-    role: "Marketing",
-    salary: "800000"
+    name: "Ayash",
+    role: "Dev",
+    salary: 100
   },
   {
     id: 3,
-    name: "Shubham",
+    name: "Aman",
     role: "Sales",
-    salary: "750000"
+    salary: 200
   },
   {
     id: 4,
-    name: "Harsh",
+    name: "Karan",
     role: "HR",
-    salary: "600000"
+    salary: 250
   },
-]
+  {
+    id: 5,
+    name: "Akash",
+    role: "Dev",
+    salary: 300
+  },
+];
 
 const App = () => {
-    const [searchQuery, setSearchQuery] = useState("");
-    const [selectedRole, setSelectedRole] = useState("All");
-    const [employees , setEmployees] = useState(employeeList);
+  const [searchQuery , setSearchQuery] = useState("");
+  const [selectedRole , setSelectedRole] = useState("All");
+  const [employees, setEmployees] = useState(employeeList);
 
-    const filteredEmployees = employees
-    .filter((emp) => emp.name.toLowerCase().includes(searchQuery.toLowerCase()))
-    .filter((emp) => selectedRole === "All" ? true : emp.role === selectedRole);
+  const filteredEmplyeeList = employees
+  .filter((emp) => emp.name.toLowerCase().includes(searchQuery.toLowerCase()))
+  .filter((emp) => selectedRole === "All" || emp.role === selectedRole);
 
-    const handleDelete = (id) => {
-      setEmployees(employees.filter((emp) => emp.id !== id))
-    };
 
-  return(
+  const handleDelete = (id) => {
+    setEmployees(employees.filter((emp) => emp.id !== id));
+  }
+
+  const handleAdd = (employee) => {
+    setEmployees([...employees, employee]);
+  }
+
+  return (
     <>
       <input 
         type="text"
         value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
-        placeholder="Search Employee"
+        onChange={(e)=> setSearchQuery(e.target.value)}
+        placeholder="Enter the name"
       />
 
-      <select value={selectedRole} onChange={(e)=>setSelectedRole(e.target.value)}>
+      <select value={selectedRole} onChange={(e) => setSelectedRole(e.target.value)}>
         <option value="All">All</option>
-        <option value="Software Developer">Software Developer</option>
-        <option value="Marketing">Marketing</option>
+        <option value="Dev">Developer</option>
         <option value="Sales">Sales</option>
         <option value="HR">HR</option>
       </select>
 
-       <EmployeeList  data = {filteredEmployees} onDelete = {handleDelete}/>
+      <AddEmployee onAdd={handleAdd}/>
+      <EmployeeList data={filteredEmplyeeList} onDelete = {handleDelete}/>
     </>
   )
 }
 
-export default App;
+export default App
