@@ -16,6 +16,13 @@ const App = () => {
 
   const currentPosts = data.slice(indexOfFirstPost,indexOfLastPost);
 
+  const totalPages = Math.ceil(data.length / postsPerPage); // 30 / 10 = 3 Pages
+
+  const pageNumbers = [];
+  for(let i = 1; i <= totalPages; i++){
+    pageNumbers.push(i);
+  }
+
   useEffect(() => {
     const fetchData = async () => {
       try{
@@ -46,6 +53,34 @@ const App = () => {
       <p>Number of Items present: {data.length}</p>
 
       <DisplayPosts data={currentPosts} />
+
+
+      <div>
+        <button
+          onClick={() => setCurrentPage((prev) => prev - 1)}
+          disabled={currentpage === 1}
+        >
+          Prev
+        </button>
+
+        {pageNumbers.map((page) => (
+          <button
+            key={page}
+            onClick={() => setCurrentPage(page)} 
+          >
+            {page}
+          </button>
+        ))}
+
+        <button
+          onClick={() => setCurrentPage((prev) => prev + 1)}
+          disabled={currentpage === totalPages}
+        >
+          Next
+        </button>
+
+
+      </div>
     </>
   )
 };
