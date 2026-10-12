@@ -1,5 +1,6 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import EmployeeTable from "./components/EmployeeTable";
+import EmployeeForm from "./components/EmployeeForm";
 
 const initialEmployees = [
   {
@@ -42,19 +43,44 @@ const initialEmployees = [
 
 const App = () => {
 
-  const[employees , setEmployees] = useState(initialEmployees);
+  const [employees, setEmployees] = useState(initialEmployees);
+  const [editEmployee, setEditEmployee] = useState(null);
 
   const handleDelete = (id) => {
     setEmployees(employees.filter((emp) => emp.id !== id));
   }
 
+  const handleAdd = (newEmpData) => {
+    const newEmployee = {
+      ...newEmpData,
+      id: Date.now(),
+      salary: Number(newEmpData.salary)
+    };
+
+    setEmployees([newEmployee, ...employees]);
+  };
+
+  const handleUpdate = (updateEmp) => {
+    const updatedList = employees.map((emp) => {
+      if(emp.id === updateEmp.id){
+        return updateEmp;
+      }else{
+        return emp;
+      }
+    });
+
+    setEmployees(updatedList);
+    setEditEmployee(null);
+  }
+
   return (
     <>
       <div>
-        <h1 style={{"textAlign" : "center"}}>Employees Management Dashboard</h1>
+        <h1 style={{ "textAlign": "center" }}>Employees Management Dashboard</h1>
         {/* <p>Total Employees: {employees.length}</p> */}
 
-        <EmployeeTable employees = {employees} onDelete = {handleDelete} />
+        <EmployeeForm editEmployee={editEmployee} onSubmit={editEmployee ? handleUpdate : handleAdd} />
+        <EmployeeTable employees={employees} onDelete={handleDelete} onEdit={setEditEmployee} />
       </div>
     </>
   )

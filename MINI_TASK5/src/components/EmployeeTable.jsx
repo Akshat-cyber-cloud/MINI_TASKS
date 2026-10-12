@@ -1,7 +1,7 @@
 import React from "react";
 import "./EmployeeTable.css";
 
-const EmployeeTable = ({ employees , onDelete}) => {
+const EmployeeTable = ({ employees , onDelete , onEdit}) => {
   return (
     <div className="table-container">
       <table className="employee-table">
@@ -32,7 +32,7 @@ const EmployeeTable = ({ employees , onDelete}) => {
 
               <td>
                 <div className="action-btns">
-                  <button className="btn-edit"> Edit</button>
+                  <button className="btn-edit" onClick={() => onEdit(emp)}> Edit</button>
                   <button className="btn-delete" onClick={() => onDelete(emp.id)}>Delete</button>
                 </div>
               </td>
